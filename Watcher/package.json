@@ -1,0 +1,16 @@
+{
+  "name": "GarrisonPushWatcher",
+  "version": "0.0.0",
+  "description": "Watches your World of Warcraft\\WTF\\Account for changes.",
+  "main": "watcher.js",
+  "author": {
+    "name": "BHayden",
+    "email": ""
+  },
+  "dependencies": {
+    "minimist": "*",
+    "watchr": "*",
+    "edge": "^0.9.0",
+    "unirest": "*"
+  }
+}
