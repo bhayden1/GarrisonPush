@@ -5,14 +5,13 @@
   "main": "watcher.js",
   "author": {
     "name": "BHayden",
-    "email": ""
+    "email": "bhayden1@gmail.com"
   },
   "dependencies": {
     "minimist": "*",
     "watchr": "*",
-    "edge": "^0.9.0",
     "unirest": "*",
-    "azure": "*",
-    "q": "*"
+    "q": "*",
+    "moment": "2.9.0"
   }
 }

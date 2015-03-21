@@ -1,6 +1,6 @@
 ## Interface: 60100
 ## Title: Garrison Push
-## Notes: My first AddOn
+## Notes: Garrison push addon
 ## SavedVariablesPerCharacter: Test, Missions, MissionsJson
 libs/dkjson.lua
 GP.lua
