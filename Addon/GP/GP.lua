@@ -13,7 +13,15 @@ frame:SetScript("OnEvent", function(self, event, arg1)
       print("Hello, world! Times: " .. Test)
     elseif event == "PLAYER_LOGOUT" then
       local missions = C_Garrison.GetInProgressMissions()
+      local jsonStruct = {}
+      local name = UnitName("player")
+      local realm = GetRealmName()
+      local uuid = realm .. "-" .. name
       Missions = {}
+      jsonStruct["character"] = name
+      jsonStruct["realm"] = realm
+      jsonStruct["uuid"] = uuid
+
       for k, v in pairs(missions) do
         local mission = {}
         mission["name"] = v["name"]
@@ -24,5 +32,7 @@ frame:SetScript("OnEvent", function(self, event, arg1)
         mission["level"] = v["level"]
         Missions[k] = mission
       end
+      jsonStruct["missions"] = Missions
+      MissionsJson = JSON.encode(jsonStruct, {indent = false})
     end
 end)

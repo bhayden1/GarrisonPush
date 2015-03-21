@@ -11,6 +11,8 @@
     "minimist": "*",
     "watchr": "*",
     "edge": "^0.9.0",
-    "unirest": "*"
+    "unirest": "*",
+    "azure": "*",
+    "q": "*"
   }
 }
