@@ -8,13 +8,10 @@ var parseFileData = function(data) {
       jsonString = jsonString.substr(0, last);
   jsonString = jsonString.replace('MissionsJson = "', '');
   jsonString = jsonString.replace(/\\\"/g, '"');
-  console.log(jsonString);
   returnData = JSON.parse(jsonString);
-  console.log(typeof(returnData.missions));
   for (var key in returnData.missions) {
     var end = moment(returnData.missions[key].start).add(returnData.missions[key].durationSeconds, 's');
     returnData.missions[key].end = end.format('MM/DD/YY HH:mm:ss');
-    console.log(returnData.missions[key]);
   }
   console.log(returnData);
   return returnData;

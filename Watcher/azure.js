@@ -6,23 +6,6 @@ var headers = {
   'X-ZUMO-INSTALLATION-ID':'67390b1f-5db8-981f-f11a-df05747aa5c7',
   'X-ZUMO-VERSION':'ZUMO/1.2 (lang=Web; os=--; os_version=--; arch=--; version=1.2.21003.0)'
 };
-/*
-unirest.post('https://gpservice.azure-mobile.net/tables/test')
-  .headers(headers)
-  .send({
-    "Character": 'Valour',
-    'Realm': 'Kael\'Thas',
-    'uuid': 'Valour-Kael\'Thas'
-  })
-  .end(function(response) {
-    console.log(response.body);
-  });*/
-//unirest.get('https://gpservice.azure-mobile.net/tables/test')
-  //.headers(headers)
-  //.end(function(response){
-//    console.log(response.body);
-//  });
-
 
 module.exports = {
   check: function(data) {
@@ -39,7 +22,7 @@ module.exports = {
       });
 
     return deferred.promise;
-  },  
+  },
   send:function(data) {
     var deferred = Q.defer();
     data.missions = JSON.stringify(data.missions);
@@ -60,7 +43,6 @@ module.exports = {
         deferred.resolve(response.body);
       });
     } else {
-      console.log('nothing to do!')
       deferred.resolve({});
     }
 
