@@ -1,27 +1,25 @@
 <template>
-  <section class="row" repeat.for="row of characters" >
-    <header class="col-md-12">
-      <div class="col-xs-6">${row.Character}</div>
-      <div class="col-xs-6" style="text-align:right">${row.Realm}</div>
-    </header>
-
-    <div class="col-md-12">
-      <table class="table table-bordered table-striped">
-        <thead>
-          <tr>
-            <th>Mission</th>
-            <th>Level</th>
-            <th>Finished</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr repeat.for="mission of row.missions">
-            <td>${mission.name}</td>
-            <td>${mission.level}</td>
-            <td>${mission.end}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
+    <div class="panel panel-default row" repeat.for="row of characters" >
+      <div class="panel-heading col-md-12 ">
+        <h3 class="panel-title">${row.Character} - ${row.Realm}</h3>
+      </div>
+      <div class="panel-body">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Mission</th>
+              <th>Level</th>
+              <th>Finished</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr repeat.for="mission of row.missions">
+              <td>${mission.name}</td>
+              <td>${mission.level}</td>
+              <td>${mission.end}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>    
 </template>

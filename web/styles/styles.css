@@ -1,46 +1,62 @@
 body {
   margin: 0;
+  padding:70px;
+  color: #efc9a0;
+  background: #000;
 }
 
-.splash {
-    text-align: center;
-    margin: 10% 0 0 0;
-    box-sizing: border-box;
+.container, .panel {
+  background: #1A0F09;
 }
 
-.splash .message {
-    font-size: 72px;
-    line-height: 72px;
-    text-shadow: rgba(0, 0, 0, 0.5) 0 0 15px;
-    text-transform: uppercase;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+.table>thead>tr>th {
+  background-color: #4C1A08;
+  color: white;
+  border-bottom: 1px solid #1a0f08;
 }
 
-.splash .fa-spinner {
-    text-align: center;
-    display: inline-block;
-    font-size: 72px;
-    margin-top: 50px;
+.table > tbody > tr  {
+  background: #2b1507;
 }
 
-.page-host {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 50px;
-    bottom: 0;
-    overflow-x: hidden;
-    overflow-y: auto;
+.table > tbody > tr > td {
+  border-top: 1px solid #31190a;
 }
 
-section {
-    margin: 0 20px;
+
+.table-striped>tbody>tr:nth-of-type(odd) {
+  background: #231207;
+  border-top: 1px solid #30190b;
 }
 
-.navbar-nav li.loader {
-    margin: 12px 24px 0 6px;
+.table-striped>tbody>tr:nth-of-type(odd) > td {
+  border-top: 1px solid #30190b;
+}
+.panel-default > .panel-heading {
+  padding: 10px 15px;
+  border-bottom: 1px solid transparent;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  background: #1A0F09;
+  color: #FEF092;
 }
 
-.pictureDetail {
-    max-width: 425px;
+.panel-default {
+  border-color: #31190a;
+  margin-bottom: 0;
+}
+
+.navbar-default {
+  background-color: #1A0F09;
+  background-color: rgba(26, 15, 9, .7);
+  border-color: #30190b;
+  color: #ffb100;
+}
+
+.navbar-default .navbar-brand {
+  color: #ffb100;
+}
+
+.navbar-default .navbar-nav>.active> a {
+  background-color: #2b1507;
 }
