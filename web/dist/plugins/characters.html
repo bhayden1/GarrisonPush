@@ -1,0 +1,34 @@
+<template>
+    <div class="panel panel-default row" repeat.for="row of characters" show.bind="auth">
+      <div class="panel-heading col-md-12 ">
+        <h3 class="panel-title">${row.Character} - ${row.Realm}</h3>
+      </div>
+      <div class="panel-body col-md-12">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Mission</th>
+              <th>Level</th>
+              <th>Finished</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr repeat.for="mission of row.missions">
+              <td>${mission.name}</td>
+              <td>${mission.level}</td>
+              <td>${mission.end}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="panel panel-default row" show.bind="!auth">
+      <div class="panel-heading col-md-12">
+        <h3 class="panel-title">Please login to view characters</h3>
+      </div>
+      <div class="panel-body col-md12">
+        Currently only google authentication is supported.
+      </div>
+    </div>
+</template>
