@@ -1,4 +1,7 @@
 <template>
-  <button type="button" class="btn btn-default navbar-btn" click.delegate="auth()" show.bind="!loggedIn">Sign in</button>
+  <import from="./plugins/character-search"></import>
+  <button type="button" class="btn btn-default navbar-btn" click.delegate="auth()" show.bind="!loggedIn">Sign in with Google</button>
   <button type="button" class="btn btn-default navbar-btn" click.delegate="logout()" show.bind="loggedIn">Sign out</button>
+  <button type="button" class="btn btn-default navbar-btn" click.delegate="getUserData()" show.bind="loggedIn">My characters</button>  
+  <search />
 </template>

@@ -11,12 +11,23 @@ export class AzureClient {
     });
   }
 
+  add(data) {
+    return this.provider.invokeApi('private', {method: 'post', body: data});
+  }
+
+  fetchUserData() {
+    return this.provider.invokeApi('private', {method: 'get'});
+  }
+
   currentUser() {
     return this.provider.currentUser;
   }
 
-  fetch(id) {
-    return this.provider.invokeApi('test', {method: 'get'});
+  fetch(term) {
+    console.log(this.provider.currentUser);
+    return this.provider.invokeApi('test', {method: 'get', parameters: {
+      term: term
+    }});
   }
 
   logout() {

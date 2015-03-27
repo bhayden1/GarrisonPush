@@ -1,7 +1,19 @@
 <template>
-    <div class="panel panel-default row" repeat.for="row of characters" show.bind="auth">
+  <div class="panel panel-default row" show.bind="showSearch">
+    <div class="panel-heading col-md-12">
+      <h3 class="panel-title">Sign in to view characters or search</h3>
+    </div>
+  </div>
+  <div class="panel panel-default row" show.bind="showNoAccountSearch">
+    <div class="panel-heading col-md-12">
+      <h3 class="panel-title">Search to add characters to your account.</h3>
+    </div>
+  </div>
+    <div class="panel panel-default row" repeat.for="row of characters" >
       <div class="panel-heading col-md-12 ">
-        <h3 class="panel-title">${row.Character} - ${row.Realm}</h3>
+        <h3 class="panel-title">${row.Character} - ${row.Realm}
+          <button class="btn-default pull-right" show.bind="row.showAdd" click.delegate="row.add()"><i class="glyphicon glyphicon-plus"></i></button>
+        </h3>
       </div>
       <div class="panel-body col-md-12">
         <table class="table table-striped">
@@ -20,15 +32,6 @@
             </tr>
           </tbody>
         </table>
-      </div>
-    </div>
-
-    <div class="panel panel-default row" show.bind="!auth">
-      <div class="panel-heading col-md-12">
-        <h3 class="panel-title">Please login to view characters</h3>
-      </div>
-      <div class="panel-body col-md12">
-        Currently only google authentication is supported.
       </div>
     </div>
 </template>

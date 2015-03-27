@@ -16,16 +16,19 @@ export class Auth {
 
   auth() {
     var handler = (result) => {
-      console.log(result);
-      console.log(this);
       this.events.publish('login', this.provider.currentUser());
       this.loggedIn = this.provider.auth();
     }
     this.provider.login().then(handler);
   }
 
+  getUserData() {
+    this.events.publish('refreshUser');
+  }
+
   logout() {
     this.provider.logout();
+    this.events.publish('logout', this.provider.currentUser());
     this.loggedIn = this.provider.auth();
   }
 }

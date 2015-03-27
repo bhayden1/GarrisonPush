@@ -5,28 +5,92 @@ export class Characters {
   constructor(provider, events) {
     this.provider = provider;
     this.characters = [];
-    this.auth = false;
+    this.loggedIn = false;
+    this.showSearch = true;
+    this.showNoAccountSearch = false;
     var loginHandler = (payload) => {
-      this.auth = this.provider.auth();
-      this.activate();
+      this.loggedIn = this.provider.auth();
+      this.showSearch = !this.loggedIn;
+      this.getUserData();
+    };
+
+    var logoutHandler = () => {
+      this.loggedIn = false;
+      this.showSearch = true;
+      this.characters = [];
     }
+
+    var searchHandler = (term) => {
+      this.search(term);
+    };
+
+    var getUserData = () => {
+      this.getUserData();
+    }
+
+    events.subscribe('search', searchHandler);
     events.subscribe('login', loginHandler);
+    events.subscribe('logout', logoutHandler);
+    events.subscribe('refreshUser', getUserData);
+  }
+
+  getUserData() {
+    this.provider.fetchUserData().then(response => {
+      this.processResults(response, false);
+    });
   }
 
   activate() {
-    if(!this.auth) {
-      return;
+    this.characters = [];
+    if(this.loggedIn) {
+      this.search('');
     }
-    return this.provider.fetch().then(response=> {
-      response.result.forEach(function(character) {
+  }
+
+  processResults(response, showAdd) {
+    var characters = response.result || response; //until i get a steady result from azure
+    var loggedIn = this.loggedIn;
+    var provider = this.provider;
+    characters.forEach(function(character) {
+      var missions, missionsArray = [];
+      missions = JSON.parse(character.missions);
+      for(var mission in missions) {
+        missionsArray.push(missions[mission]);
+      }
+      character.missions = missionsArray;
+      character.showAdd = showAdd;
+      character.add = function() {
+        provider.add({character: this.id}).then(function(result){
+          console.log(result);
+        });
+      };
+    });
+    this.characters = characters;
+    this.showNoAccountSearch = !this.showSearch && this.characters.length === 0;
+  }
+
+  search(term) {
+    this.showSearch = false;
+    return this.provider.fetch(term).then(response => {
+      var characters = response.result || response; //until i get a steady result from azure
+      var loggedIn = this.loggedIn;
+      var provider = this.provider;
+      characters.forEach(function(character) {
         var missions, missionsArray = [];
         missions = JSON.parse(character.missions);
         for(var mission in missions) {
           missionsArray.push(missions[mission]);
         }
         character.missions = missionsArray;
+        character.showAdd = loggedIn;
+        character.add = function() {
+          provider.add({character: this.id}).then(function(result){
+            console.log(result);
+          });
+        };
       });
-      this.characters = response.result;
+      this.characters = characters;
+      this.showNoAccountSearch = !this.showSearch && this.characters.length === 0;
     });
   }
 }
