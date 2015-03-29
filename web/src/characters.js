@@ -5,8 +5,8 @@ export class Characters {
   constructor(provider, events) {
     this.provider = provider;
     this.characters = [];
-    this.loggedIn = false;
-    this.showSearch = true;
+    this.loggedIn = this.provider.auth();
+    this.showSearch = !this.provider.auth();
     this.showNoAccountSearch = false;
     var loginHandler = (payload) => {
       this.loggedIn = this.provider.auth();
@@ -43,7 +43,7 @@ export class Characters {
   activate() {
     this.characters = [];
     if(this.loggedIn) {
-      this.search('');
+      this.getUserData();
     }
   }
 

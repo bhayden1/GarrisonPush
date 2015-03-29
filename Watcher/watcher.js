@@ -10,17 +10,17 @@ console.log(path);
 if(argv.t) {
   var filePath  = "C:\\Program Files (x86)\\World of Warcraft\\WTF\\Account\\BHAYDEN1\\Kael'thas\\Valour\\SavedVariables\\GP.lua";
   fileProcess(filePath)
-    .then(azure.check)
     .then(azure.send)
     .then(function(data) {
       console.log('all done!')
+      console.log(data);
     });
 } else {
   watcher.watch({
       paths: [path],
       listeners: {
           log: function(logLevel){
-              
+
           },
           error: function(err){
               console.log('an error occured:', err);
