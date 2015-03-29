@@ -5,10 +5,16 @@ export class AzureClient {
   }
 
   login () {
-    return this.provider.login("google")
-    .then(null, function(error){
+    var error = function(error){
         alert(error);
-    });
+    };
+    var success = function(user) {
+      console.log(user);
+      localStorage.setItem('user', JSON.stringify(user));
+      console.log(localStorage);
+    };
+    return this.provider.login('google')
+      .then(success, error);
   }
 
   add(data) {
@@ -31,10 +37,14 @@ export class AzureClient {
   }
 
   logout() {
-    return this.provider.logout();
+    return this.provider.logout().then(function() {
+      localStorage.removeItem('user')
+    });
   }
 
   auth() {
+    var user = localStorage.getItem('user');
+    this.provider.currentUser = (user) ? JSON.parse(user) : null;
     return this.provider.currentUser !== null;
   }
 }
