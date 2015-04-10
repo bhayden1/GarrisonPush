@@ -8,7 +8,8 @@ var path = base + '\\WTF\\Account';
 var regEx = /GP.lua$/gi
 console.log(path);
 if(argv.t) {
-  var filePath  = "C:\\Program Files (x86)\\World of Warcraft\\WTF\\Account\\BHAYDEN1\\Kael'thas\\Valour\\SavedVariables\\GP.lua";
+  //var filePath  = "C:\\Program Files (x86)\\World of Warcraft\\WTF\\Account\\BHAYDEN1\\Kael'thas\\Valour\\SavedVariables\\GP.lua";
+  var filePath  = "C:\\Program Files (x86)\\World of Warcraft\\WTF\\Account\\BHAYDEN1\\Vek'nilash\\Werk\\SavedVariables\\GP.lua";
   fileProcess(filePath)
     .then(azure.send)
     .then(function(data) {

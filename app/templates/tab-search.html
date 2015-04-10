@@ -1,0 +1,25 @@
+<ion-view view-title="">
+  <ion-nav-buttons side="left">
+    <div class="item-input-inset">
+      <label class="item-input-wrapper">
+        <i class="icon ion-ios7-search placeholder-icon"></i>
+        <input type="search" placeholder="Search" ng-keypress="searchTyped($event)" ng-model="term">
+      </label>
+      <button class="button button-clear" ng-click="search()">
+        Go
+      </button>
+    </div>
+  </ion-nav-buttons>
+  <ion-content class="padding">
+    <ion-list>
+      <ion-item class="item-remove-animate item-icon-right" ng-repeat="character in characters" type="item-text-wrap">
+        <h2>{{character.Character}}</h2>
+        <p>{{character.Realm}}</p>
+
+        <ion-button class="button-assertive" ng-click="add(character)">
+          <i class="icon ion-ios-plus-empty icon-accessory"></i>
+        </ion-button>
+      </ion-item>
+    </ion-list>  
+  </ion-content>
+</ion-view>

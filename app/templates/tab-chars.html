@@ -1,0 +1,16 @@
+<ion-view view-title="">
+  <ion-content>
+    <swipe-cards>
+      <swipe-card ng-repeat="char in characters" on-destroy="cardDestroyed($index)" on-card-swipe="cardSwiped($index)">
+        <div class="card">
+          <div class="item item-divider">
+            {{char.character}} - {{char.realm}}
+          </div>
+          <div class="item item-text-wrap">
+            Missions would go here
+          </div>
+        </div>
+      </swipe-card>
+    </swipe-cards>
+  </ion-content>
+</ion-view>

@@ -3,48 +3,40 @@ frame:RegisterEvent("ADDON_LOADED")
 frame:RegisterEvent("PLAYER_LOGOUT")
 frame:RegisterEvent("GARRISON_MISSION_STARTED")
 
+local function serialize()
+  local jsonStruct = {}
+  local name = UnitName("player")
+  local realm = GetRealmName()
+  jsonStruct["character"] = name
+  jsonStruct["realm"] = realm
+  jsonStruct["uuid"] = realm .. "-" .. name
+  jsonStruct["missions"] = Missions
+  MissionsJson = JSON.encode(jsonStruct, {indent = false})
+end
+
 frame:SetScript("OnEvent", function(self, event, arg1)
     if event == "ADDON_LOADED"and arg1 == "GP" then
-      print("hello from GP")
-      if Test == nil then
-          Test = 0
-      else
-        Test = Test + 1
-      end
-
       if Missions == nil then
         Missions = {}
+      else
+        local nowtime = time()
+        local missions = {}
+        for k, v in pairs(Missions) do
+          if(v["endTime"] ~= nil) then
+            if(difftime(nowtime, v["endTime"]) < 0) then
+              print("keeping mission " .. k)
+              missions[k] = v
+            end
+          end
+        end
+        Missions = missions
       end
-
-      print("Hello, world! Times: " .. Test)
+      print("GP loaded")
     elseif event == "PLAYER_LOGOUT" then
-      --local missions = C_Garrison.GetInProgressMissions()
-      --Missions = {}
-
-      --for k, v in pairs(missions) do
---        local mission = {}
-  --      mission["name"] = v["name"]
-    --    mission["duration"] = v["duration"]
-      --  mission["durationSeconds"] = v["durationSeconds"]
-        --mission["timeLeft"] = v["timeLeft"]
-        --mission["missionId"] = v["missionID"]
-        --mission["level"] = v["level"]
-        --Missions[k] = mission
-      --end
-      local jsonStruct = {}
-      local name = UnitName("player")
-      local realm = GetRealmName()
-      local uuid = realm .. "-" .. name
-      jsonStruct["character"] = name
-      jsonStruct["realm"] = realm
-      jsonStruct["uuid"] = uuid
-      jsonStruct["missions"] = Missions
-      MissionsJson = JSON.encode(jsonStruct, {indent = false})
+      serialize()
     end
 
     if(event=="GARRISON_MISSION_STARTED") then
-      print("mission started!")
-      print(arg1)
       local v = C_Garrison.GetBasicMissionInfo(arg1)
       local mission = {}
       mission["name"] = v["name"]
@@ -54,18 +46,10 @@ frame:SetScript("OnEvent", function(self, event, arg1)
       mission["missionId"] = v["missionID"]
       mission["level"] = v["level"]
       mission["start"] = date()
+      mission["startTime"] = time()
+      mission["endTime"] = time() + v["durationSeconds"]
       Missions[v["missionID"]] = mission
-
-      local jsonStruct = {}
-      local name = UnitName("player")
-      local realm = GetRealmName()
-      local uuid = realm .. "-" .. name
-      jsonStruct["character"] = name
-      jsonStruct["realm"] = realm
-      jsonStruct["uuid"] = uuid
-      jsonStruct["missions"] = Missions
-      MissionsJson = JSON.encode(jsonStruct, {indent = false})
-
+      serialize()
     end
 
 end)
