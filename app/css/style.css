@@ -1,1 +1,57 @@
-/* Empty. Add your own CSS if you like */
+body, .card, .pane, .view {
+  color: #efc9a0;
+  background: #000;
+}
+
+.tabs-positive > .tabs, .tabs.tabs-positive {
+  background-color: #1A0F09;
+  background-color: rgba(26, 15, 9, .7);
+  border-color: #30190b;
+  color: #ffb100;
+}
+
+.bar.bar-positive {
+  background-color: #1A0F09;
+  background-color: rgba(26, 15, 9, .7);
+  border-color: #30190b;
+  color: #ffb100;
+}
+
+.bar.bar-positive .title {
+  color: #ffb100;
+}
+
+.item.item-divider,
+.item.item-divider:nth-of-type(odd) {
+  border-bottom: 1px solid transparent;
+  background: #4C1A08;
+  color: #FFF;
+}
+
+.item {
+  background: #2b1507;
+  border: 1px solid #31190a;
+}
+
+.item h2 {
+  color: #efc9a0;
+}
+
+.item:nth-of-type(odd) {
+  background: #231207;
+  border: 1px solid #30190b;
+}
+
+.checkbox input:before, .checkbox-icon:before {
+  background: #4C1A08;
+  border-color: #4C1A08;
+}
+
+.checkbox input:checked:before, .checkbox input:checked + .checkbox-icon:before {
+  background: #4C1A08;
+  border-color: #4C1A08;
+}
+
+.checkbox input:after, .checkbox-icon:after {
+  border-color: #ffb100;
+}

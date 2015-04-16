@@ -32,12 +32,25 @@ angular.module('starter.controllers', [])
     return CharacterService.search(term);
   }
 })
-.controller('CharactersCtrl', function($scope, characters) {
+.controller('CharactersCtrl', function($scope, characters, CharacterService) {
   $scope.characters = characters;
   $scope.cardDestroyed = function($index) {
     console.log('card destroyed')
   };
 
+  $scope.$on('deleted', function(evt, char) {
+    var idx =  -1;
+    for(var i=0; i< $scope.characters.length; i++) {
+      if($scope.characters[i].id === char.id) {
+        idx = i;
+      }
+    }
+    $scope.characters.splice(idx, 1);
+  });
+
+  $scope.$on('added', function(evt, char) {
+    $scope.characters.push(char);
+  });
 })
 .controller('AccountCtrl', function($scope, Azure) {
   $scope.loggedIn = false;

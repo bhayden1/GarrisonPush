@@ -1,11 +1,10 @@
 angular.module('starter.services', [])
 .factory('local', function($cordovaSQLite, $cordovaDevice, $q) {
   var checkTable = function(tx) {
-    //tx.executeSql('DROP TABLE characters');
-    tx.executeSql('CREATE TABLE IF NOT EXISTS characters (cid integer primary key, character text, realm text, id text, uuid text)');
+    tx.executeSql('CREATE TABLE IF NOT EXISTS characters (cid integer primary key, Character text, Realm text, id text, uuid text)');
   };
   var add = function(tx, character, uuid) {
-    tx.executeSql('SELECT * FROM characters where id=?', [character.id], function(transaction, results) {
+    tx.executeSql('SELECT id FROM characters where id=?', [character.id], function(transaction, results) {
       if(results.rows.length > 0) {
         return;
       }
@@ -15,7 +14,7 @@ angular.module('starter.services', [])
   var read = function(tx) {
     var deferred = $q.defer();
     var characters = [];
-    tx.executeSql('SELECT character, realm, id, uuid FROM characters', [], function(transaction, results) {
+    tx.executeSql('SELECT Character, Realm, id, uuid FROM characters', [], function(transaction, results) {
       for (var i=0; i<results.rows.length; i++) {
           characters.push(results.rows.item(i));
       }
@@ -34,6 +33,17 @@ angular.module('starter.services', [])
     }
     return db;
   };
+
+  var deleteCharacter = function(tx, character) {
+    tx.executeSql('SELECT * FROM characters where id=?', [character.id], function(transaction, results) {
+      if(results.rows.length <= 0) {
+        return;
+      }
+      tx.executeSql('DELETE FROM characters where id=?', [character.id], function(delTx, results) {
+        console.log(results);
+      });
+    });
+  }
   return {
     add: function(character) {
       var uuid = $cordovaDevice.getUUID();
@@ -50,14 +60,8 @@ angular.module('starter.services', [])
     remove: function(character) {
       var db = openDb();
       db.transaction(function(tx) {
-        tx.executeSql('SELECT * FROM characters where id=?', [character.id], function(transaction, results) {
-          if(results.rows.length <= 0) {
-            return;
-          }
-          tx.executeSql('DELETE FROM characters where id=?', [character.id], function(delTx, results) {
-            console.log(results);
-          });
-        });
+        checkTable(tx);
+        deleteCharacter(tx, character);
       });
     },
     get: function() {
@@ -122,7 +126,7 @@ angular.module('starter.services', [])
     }
   }
 })
-.factory('CharacterService', function(local, Azure, $q, $ionicLoading) {
+.factory('CharacterService', function(local, Azure, $q, $ionicLoading, $rootScope) {
   var processResults = function(response) {
     var deferred = $q.defer();
     var characters = response.result || response;
@@ -178,9 +182,11 @@ angular.module('starter.services', [])
     add: function(character) {
       local.add(character);
       //TODO - add to azure with device UUID
+      $rootScope.$broadcast('added', character);
     },
     remove: function(character) {
       local.remove(character);
+      $rootScope.$broadcast('deleted', character);
     },
     search: function(term) {
       var deferred = $q.defer();

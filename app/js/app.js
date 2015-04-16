@@ -45,6 +45,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
           controller: 'CharactersCtrl',
           resolve: {
             characters: function(CharacterService) {
+              console.log("resolving characters")
               return CharacterService.getAll();
             }
           }

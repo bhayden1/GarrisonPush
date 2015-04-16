@@ -1,10 +1,10 @@
-<ion-view view-title="">
+<ion-view view-title="Garrison Watch">
   <ion-content>
     <swipe-cards>
       <swipe-card ng-repeat="char in characters" on-destroy="cardDestroyed($index)" on-card-swipe="cardSwiped($index)">
         <div class="card">
           <div class="item item-divider">
-            {{char.character}} - {{char.realm}}
+            {{char.Character}} - {{char.Realm}}
           </div>
           <div class="item item-text-wrap" ng-show="!char.missions">
             Updating missions
