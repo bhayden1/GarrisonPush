@@ -21,7 +21,6 @@ angular.module('starter.controllers', [])
   }
 
   $scope.add = function(character, $event) {
-    console.log($event.target.checked);
     if($event.target.checked) {
       CharacterService.add(character);
     } else {
