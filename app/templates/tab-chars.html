@@ -6,8 +6,13 @@
           <div class="item item-divider">
             {{char.character}} - {{char.realm}}
           </div>
-          <div class="item item-text-wrap">
-            Missions would go here
+          <div class="item item-text-wrap" ng-show="!char.missions">
+            Updating missions
+          </div>
+
+          <div class="item item-text-wrap" ng-repeat="mission in char.missions">
+            <h2>{{mission.name}}</h2>
+            <p>Ending {{mission.end}}</p>
           </div>
         </div>
       </swipe-card>

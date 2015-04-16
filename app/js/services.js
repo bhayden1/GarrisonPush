@@ -15,12 +15,14 @@ angular.module('starter.services', [])
   var read = function(tx) {
     var deferred = $q.defer();
     tx.executeSql('SELECT character, realm, id, uuid FROM characters', [], function(transaction, results) {
-      var characters = [];
       for (var i=0; i<results.rows.length; i++) {
           characters.push(results.rows.item(i));
       }
       console.log(characters);
+
       deferred.resolve(characters);
+    }, function() {
+      deferred.resolve([]);
     });
     return deferred.promise;
   }
@@ -28,12 +30,12 @@ angular.module('starter.services', [])
     var db;
     try {
       db = $cordovaSQLite.openDB('gp');
-      console.log('cordova plugin worked!');
     } catch(e) {
       db = window.openDatabase('gp', '0.1', 'Garrison Info', 1000000);
     }
     return db;
   };
+  var characters = [];
   return {
     add: function(character) {
       var uuid = $cordovaDevice.getUUID();
@@ -106,51 +108,49 @@ angular.module('starter.services', [])
     }
   }
 })
-.factory('Chats', function() {
-  // Might use a resource here that returns a JSON array
-
-  // Some fake testing data
-  var chats = [{
-    id: 0,
-    name: 'Ben Sparrow',
-    lastText: 'You on your way?',
-    face: 'https://pbs.twimg.com/profile_images/514549811765211136/9SgAuHeY.png'
-  }, {
-    id: 1,
-    name: 'Max Lynx',
-    lastText: 'Hey, it\'s me',
-    face: 'https://avatars3.githubusercontent.com/u/11214?v=3&s=460'
-  }, {
-    id: 2,
-    name: 'Andrew Jostlin',
-    lastText: 'Did you get the ice cream?',
-    face: 'https://pbs.twimg.com/profile_images/491274378181488640/Tti0fFVJ.jpeg'
-  }, {
-    id: 3,
-    name: 'Adam Bradleyson',
-    lastText: 'I should buy a boat',
-    face: 'https://pbs.twimg.com/profile_images/479090794058379264/84TKj_qa.jpeg'
-  }, {
-    id: 4,
-    name: 'Perry Governor',
-    lastText: 'Look at my mukluks!',
-    face: 'https://pbs.twimg.com/profile_images/491995398135767040/ie2Z_V6e.jpeg'
-  }];
+.factory('CharacterService', function(local, Azure, $q, $ionicLoading) {
+  var processResults = function(response, showAdd) {
+    var characters = response.result || response;
+    characters.forEach(function(character) {
+      var missions, missionsArray = [];
+      missions = JSON.parse(character.missions);
+      for(var mission in missions) {
+        missionsArray.push(missions[mission]);
+      }
+      character.missions = missionsArray;
+      character.showAdd = showAdd;
+    });
+    return characters;
+  };
 
   return {
-    all: function() {
-      return chats;
-    },
-    remove: function(chat) {
-      chats.splice(chats.indexOf(chat), 1);
-    },
-    get: function(chatId) {
-      for (var i = 0; i < chats.length; i++) {
-        if (chats[i].id === parseInt(chatId)) {
-          return chats[i];
+    getAll: function() {
+      $ionicLoading.show({
+        template: 'Loading...'
+      });
+      var deferred = $q.defer();
+      var characters;
+      local.get().then(function(characters) {
+        var ids =[];
+        characters = characters
+        for(var i=0; i < characters.length; i++) {
+          ids.push(characters[i].id);
         }
-      }
-      return null;
+        Azure.fetchByIds(ids.join(",")).then(function(results) {
+          var fullChars = processResults(results, false);
+          for(var i=0; i< characters.length; i++) {
+            for(var j=0; j < fullChars.length; j++) {
+              if(fullChars[j].id === characters[i].id) {
+                characters[i].missions = fullChars[j].missions;
+              }
+            }
+          }
+
+          $ionicLoading.hide();
+          deferred.resolve(characters);
+        });
+      });
+      return deferred.promise;
     }
-  };
+  }
 });

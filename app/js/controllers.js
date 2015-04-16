@@ -20,7 +20,8 @@ angular.module('starter.controllers', [])
     });
   }
 
-  $scope.add = function(character) {
+  $scope.add = function(character, $event) {
+    console.log($event.target.checked);
     local.add(character);
   }
 
@@ -47,41 +48,20 @@ angular.module('starter.controllers', [])
     return characters;
   }
 })
-.controller('CharactersCtrl', function($scope, local, $ionicLoading, Azure) {
-  $scope.characters = [];
-  $ionicLoading.show({
-    template: 'Loading...'
-  });
-
+.controller('CharactersCtrl', function($scope, $ionicLoading, characters) {
+  $scope.characters = characters;
   $scope.cardDestroyed = function($index) {
     console.log('card destroyed')
   };
-  local.get().then(function(characters) {
-    var ids =[];
-    for(var i=0; i < characters.length; i++) {
-      ids.push(characters[i].id);
-    }
-    Azure.fetchByIds(ids.join(",")).then(function(results) {
-      console.log(results);
-    })
-    $scope.characters = characters;
-    $ionicLoading.hide();
-  })
-})
 
-.controller('ChatsCtrl', function($scope, Chats) {
-  $scope.chats = Chats.all();
-  $scope.remove = function(chat) {
-    Chats.remove(chat);
-  }
 })
+.controller('AccountCtrl', function($scope, Azure) {
+  $scope.loggedIn = false;
 
-.controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
-  $scope.chat = Chats.get($stateParams.chatId);
-})
-
-.controller('AccountCtrl', function($scope) {
-  $scope.settings = {
-    enableFriends: true
+  $scope.login = function() {
+    console.log('logging in');
+    Azure.login().then(function(result) {
+        console.log(result);
+    });
   };
 });

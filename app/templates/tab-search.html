@@ -12,14 +12,13 @@
   </ion-nav-buttons>
   <ion-content class="padding">
     <ion-list>
-      <ion-item class="item-remove-animate item-icon-right" ng-repeat="character in characters" type="item-text-wrap">
+      <ion-item class="item-remove-animate item-checkbox" ng-repeat="character in characters" type="item-text-wrap">
+        <label class="checkbox">
+          <input type="checkbox" ng-click="add(character, $event)" ng-checked="true">
+        </label>
         <h2>{{character.Character}}</h2>
         <p>{{character.Realm}}</p>
-
-        <ion-button class="button-assertive" ng-click="add(character)">
-          <i class="icon ion-ios-plus-empty icon-accessory"></i>
-        </ion-button>
       </ion-item>
-    </ion-list>  
+    </ion-list>
   </ion-content>
 </ion-view>
