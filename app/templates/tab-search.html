@@ -14,7 +14,7 @@
     <ion-list>
       <ion-item class="item-remove-animate item-checkbox" ng-repeat="character in characters" type="item-text-wrap">
         <label class="checkbox">
-          <input type="checkbox" ng-click="add(character, $event)" ng-checked="true">
+          <input type="checkbox" ng-click="add(character, $event)" ng-checked="character.selected">
         </label>
         <h2>{{character.Character}}</h2>
         <p>{{character.Realm}}</p>

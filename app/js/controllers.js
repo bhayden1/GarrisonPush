@@ -1,6 +1,6 @@
 angular.module('starter.controllers', [])
 
-.controller('SearchCtrl', function($scope, Azure, $q, $ionicLoading, local) {
+.controller('SearchCtrl', function($scope, $ionicLoading, CharacterService) {
   $scope.term = 'werk';
   $scope.characters = [];
   $scope.searchTyped = function($event) {
@@ -22,33 +22,18 @@ angular.module('starter.controllers', [])
 
   $scope.add = function(character, $event) {
     console.log($event.target.checked);
-    local.add(character);
+    if($event.target.checked) {
+      CharacterService.add(character);
+    } else {
+      CharacterService.remove(character);
+    }
   }
 
   var search = function(term) {
-    var deferred = $q.defer();
-    Azure.fetch(term).then(function(response) {
-      var characters = processResults(response, true);
-      deferred.resolve(characters);
-    });
-    return deferred.promise;
-  }
-
-  var processResults = function(response, showAdd) {
-    var characters = response.result || response;
-    characters.forEach(function(character) {
-      var missions, missionsArray = [];
-      missions = JSON.parse(character.missions);
-      for(var mission in missions) {
-        missionsArray.push(missions[mission]);
-      }
-      character.missions = missionsArray;
-      character.showAdd = showAdd;
-    });
-    return characters;
+    return CharacterService.search(term);
   }
 })
-.controller('CharactersCtrl', function($scope, $ionicLoading, characters) {
+.controller('CharactersCtrl', function($scope, characters) {
   $scope.characters = characters;
   $scope.cardDestroyed = function($index) {
     console.log('card destroyed')

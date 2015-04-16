@@ -14,12 +14,11 @@ angular.module('starter.services', [])
   };
   var read = function(tx) {
     var deferred = $q.defer();
+    var characters = [];
     tx.executeSql('SELECT character, realm, id, uuid FROM characters', [], function(transaction, results) {
       for (var i=0; i<results.rows.length; i++) {
           characters.push(results.rows.item(i));
       }
-      console.log(characters);
-
       deferred.resolve(characters);
     }, function() {
       deferred.resolve([]);
@@ -35,7 +34,6 @@ angular.module('starter.services', [])
     }
     return db;
   };
-  var characters = [];
   return {
     add: function(character) {
       var uuid = $cordovaDevice.getUUID();
@@ -47,6 +45,19 @@ angular.module('starter.services', [])
 
       db.transaction(function(tx) {
         read(tx);
+      });
+    },
+    remove: function(character) {
+      var db = openDb();
+      db.transaction(function(tx) {
+        tx.executeSql('SELECT * FROM characters where id=?', [character.id], function(transaction, results) {
+          if(results.rows.length <= 0) {
+            return;
+          }
+          tx.executeSql('DELETE FROM characters where id=?', [character.id], function(delTx, results) {
+            console.log(results);
+          });
+        });
       });
     },
     get: function() {
@@ -76,8 +87,11 @@ angular.module('starter.services', [])
       return client.login('google')
         .then(success, error);
     },
-    add: function(data) {
-      return client.invokeApi('private', {method: 'post', body: data});
+    add: function(character) {
+      return client.invokeApi('private', {method: 'post', body: character});
+    },
+    remove: function(character) {
+
     },
     fetchUserData: function() {
       return client.invokeApi('private', {method: 'get'});
@@ -109,18 +123,27 @@ angular.module('starter.services', [])
   }
 })
 .factory('CharacterService', function(local, Azure, $q, $ionicLoading) {
-  var processResults = function(response, showAdd) {
+  var processResults = function(response) {
+    var deferred = $q.defer();
     var characters = response.result || response;
-    characters.forEach(function(character) {
-      var missions, missionsArray = [];
-      missions = JSON.parse(character.missions);
-      for(var mission in missions) {
-        missionsArray.push(missions[mission]);
-      }
-      character.missions = missionsArray;
-      character.showAdd = showAdd;
+    local.get().then(function(localChars) {
+      characters.forEach(function(character) {
+        var missions, missionsArray = [], selected = false;
+        for(var i=0;i<localChars.length;i++) {
+          if(localChars[i].id === character.id) {
+            selected = true;
+          }
+        }
+        missions = JSON.parse(character.missions);
+        for(var mission in missions) {
+          missionsArray.push(missions[mission]);
+        }
+        character.missions = missionsArray;
+        character.selected = selected;
+      });
+      deferred.resolve(characters);
     });
-    return characters;
+    return deferred.promise;
   };
 
   return {
@@ -137,16 +160,32 @@ angular.module('starter.services', [])
           ids.push(characters[i].id);
         }
         Azure.fetchByIds(ids.join(",")).then(function(results) {
-          var fullChars = processResults(results, false);
-          for(var i=0; i< characters.length; i++) {
-            for(var j=0; j < fullChars.length; j++) {
-              if(fullChars[j].id === characters[i].id) {
-                characters[i].missions = fullChars[j].missions;
+          processResults(results).then(function(fullChars){
+            for(var i=0; i< characters.length; i++) {
+              for(var j=0; j < fullChars.length; j++) {
+                if(fullChars[j].id === characters[i].id) {
+                  characters[i].missions = fullChars[j].missions;
+                }
               }
             }
-          }
-
-          $ionicLoading.hide();
+            $ionicLoading.hide();
+            deferred.resolve(characters);
+          });
+        });
+      });
+      return deferred.promise;
+    },
+    add: function(character) {
+      local.add(character);
+      //TODO - add to azure with device UUID
+    },
+    remove: function(character) {
+      local.remove(character);
+    },
+    search: function(term) {
+      var deferred = $q.defer();
+      Azure.fetch(term).then(function(response) {
+        processResults(response).then(function(characters) {
           deferred.resolve(characters);
         });
       });
