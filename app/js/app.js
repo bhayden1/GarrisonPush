@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngCordova'])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngCordova', 'ionic.contrib.ui.cards'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -19,6 +19,18 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       StatusBar.styleLightContent();
     }
   });
+})
+.directive('noScroll', function($document) {
+
+  return {
+    restrict: 'A',
+    link: function($scope, $element, $attr) {
+
+      $document.on('touchmove', function(e) {
+        e.preventDefault();
+      });
+    }
+  }
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
@@ -60,7 +72,24 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         controller: 'AccountCtrl'
       }
     }
+  })
+  .state('card', {
+    url: '/card',
+    templateUrl: 'templates/card-test.html',
+    controller: 'CharactersCtrl',
+    resolve: {
+      characters: function(CharacterService) {
+        console.log("resolving characters")
+        return CharacterService.getAll();
+      }
+    }
+  });/*
+  $stateProvider.state('aspects', {
+      url: '/aspects',
+      templateUrl: 'aspectsView',
+      controller: 'AspectController'
   });
+  */
 
   $urlRouterProvider.otherwise('/tab/chars');
 });

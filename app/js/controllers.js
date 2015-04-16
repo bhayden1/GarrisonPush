@@ -32,11 +32,24 @@ angular.module('starter.controllers', [])
     return CharacterService.search(term);
   }
 })
-.controller('CharactersCtrl', function($scope, characters, CharacterService) {
-  $scope.characters = characters;
+.controller('CharactersCtrl', function($scope, characters) {
+  var characters = characters;
+  var cardIndex = 0;
+  $scope.characters = [];
+  console.log(characters);
+  $scope.characters = Array.prototype.slice.call(characters, 0, 1);
   $scope.cardDestroyed = function($index) {
-    console.log('card destroyed')
+    $scope.characters.splice($index, 1);
   };
+
+  $scope.cardSwiped = function($index) {
+    cardIndex++;
+    console.log($index);
+    if(cardIndex > characters.length -1) {
+      cardIndex = 0;
+    }
+    $scope.characters.push(characters[cardIndex]);
+  }
 
   $scope.$on('deleted', function(evt, char) {
     var idx =  -1;
