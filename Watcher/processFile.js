@@ -12,8 +12,7 @@ var parseFileData = function(data) {
   for (var key in returnData.missions) {
     var end = moment(returnData.missions[key].start).add(returnData.missions[key].durationSeconds, 's');
     returnData.missions[key].end = end.format('MM/DD/YY HH:mm:ss');
-  }
-  //console.log(returnData);
+  }  
   return returnData;
 };
 

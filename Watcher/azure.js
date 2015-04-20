@@ -1,5 +1,4 @@
 var unirest = require('unirest');
-var qs = require('querystring');
 var Q = require('q');
 var headers = {
   'X-ZUMO-APPLICATION':'UUVbarwJGSIulkKJoNuuYfXBTHPtpD58',
@@ -10,7 +9,7 @@ var headers = {
 module.exports = {
   send:function(data) {
     var deferred = Q.defer();
-    data.missions = JSON.stringify(data.missions);    
+    data.missions = JSON.stringify(data.missions);
     unirest.post('https://gpservice.azure-mobile.net/api/character')
       .headers(headers)
       .send(data)

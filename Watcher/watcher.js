@@ -34,8 +34,7 @@ if(argv.t) {
           change: function(changeType,filePath,fileCurrentStat,filePreviousStat){
               if(filePath.match(regEx)) {
                 console.log('a change event occured for :',filePath);
-                fileProcess(filePath)
-                  .then(azure.check)
+                fileProcess(filePath)                  
                   .then(azure.send)
                   .then(function(data) {
                     console.log('all done!')
