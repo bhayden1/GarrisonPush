@@ -3,6 +3,10 @@ body, .card, .pane, .view {
   background: #000;
 }
 
+.pull-right {
+  float:right;
+}
+
 .tabs-positive > .tabs, .tabs.tabs-positive {
   background-color: #1A0F09;
   background-color: rgba(26, 15, 9, .7);

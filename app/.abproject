@@ -3,7 +3,7 @@
 	"ProjectGuid": "{98156315-8eb5-412b-9195-16026ab0d01e}",
 	"projectVersion": 1,
 	"AppIdentifier": "com.telerik.GarrisonWatch",
-	"DisplayName": "GarrisonWatch",
+	"DisplayName": "Garrison Watch",
 	"Author": "",
 	"Description": "",
 	"BundleVersion": "1.0",
@@ -17,10 +17,9 @@
 	"FrameworkVersion": "3.5.0",
 	"AndroidPermissions": [],
 	"DeviceOrientations": [
-		"Portrait",
-		"Landscape"
+		"Portrait"
 	],
-	"AndroidHardwareAcceleration": "false",
+	"AndroidHardwareAcceleration": "true",
 	"iOSStatusBarStyle": "Default",
 	"Framework": "Cordova",
 	"WP8TileTitle": "",

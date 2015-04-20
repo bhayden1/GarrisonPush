@@ -11,8 +11,12 @@
           </div>
 
           <div class="item item-text-wrap" ng-repeat="mission in char.missions">
+            <div class="pull-right">
+              <h2 class="ion-android-done"></h2>
+            </div>
             <h2>{{mission.name}}</h2>
-            <p>Ending {{mission.end}}</p>
+            <p>{{mission.prettyText}}</p>
+
           </div>
         </div>
       </swipe-card>

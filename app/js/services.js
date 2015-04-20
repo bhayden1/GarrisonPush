@@ -140,6 +140,8 @@ angular.module('starter.services', [])
         }
         missions = JSON.parse(character.missions);
         for(var mission in missions) {
+          var endDate = new Date(missions[mission].endTime * 1000);
+          missions[mission].prettyText = "Ending at " + endDate;          
           missionsArray.push(missions[mission]);
         }
         character.missions = missionsArray;
