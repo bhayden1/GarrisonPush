@@ -7,6 +7,7 @@ body, .card, .pane, .view {
   float:right;
 }
 
+.tabs-striped.tabs-positive .tabs,
 .tabs-positive > .tabs, .tabs.tabs-positive {
   background-color: #1A0F09;
   background-color: rgba(26, 15, 9, .7);
@@ -58,4 +59,26 @@ body, .card, .pane, .view {
 
 .checkbox input:after, .checkbox-icon:after {
   border-color: #ffb100;
+}
+
+.button.button-positive.button-outline {
+  color: #ffb100;
+  border-color: #30190b;
+}
+
+.popover {
+  background-color: #231207;
+  border-color: #30190b;
+}
+
+.popover .bar-header {
+  background-color: #1A0F09;
+  background-color: rgba(26, 15, 9, .7);
+  border-color: #30190b;
+  color: #ffb100;
+}
+
+.button,
+.bar .button.button-clear {
+  color:#ffb100;
 }

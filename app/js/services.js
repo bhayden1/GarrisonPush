@@ -1,6 +1,6 @@
 angular.module('starter.services', [])
 .factory('local', function($cordovaSQLite, $cordovaDevice, $q) {
-  var checkTable = function(tx) {
+  var checkTable = function(tx) {    
     tx.executeSql('CREATE TABLE IF NOT EXISTS characters (cid integer primary key, Character text, Realm text, id text, uuid text)');
   };
   var add = function(tx, character, uuid) {
@@ -141,7 +141,7 @@ angular.module('starter.services', [])
         missions = JSON.parse(character.missions);
         for(var mission in missions) {
           var endDate = new Date(missions[mission].endTime * 1000);
-          missions[mission].prettyText = "Ending at " + endDate;          
+          missions[mission].prettyText = "Ending at " + endDate;
           missionsArray.push(missions[mission]);
         }
         character.missions = missionsArray;
@@ -178,6 +178,16 @@ angular.module('starter.services', [])
             deferred.resolve(characters);
           });
         });
+      });
+      return deferred.promise;
+    },
+    getLocal:function() {
+      var deferred = $q.defer();
+      local.get().then(function(characters) {
+        characters.forEach(function(character) {
+          character.selected = true;
+        });
+        deferred.resolve(characters)
       });
       return deferred.promise;
     },

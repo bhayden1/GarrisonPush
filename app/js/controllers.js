@@ -1,8 +1,9 @@
 angular.module('starter.controllers', [])
 
-.controller('SearchCtrl', function($scope, $ionicLoading, CharacterService) {
+.controller('SearchCtrl', function($scope, $ionicLoading, CharacterService, characters, $ionicPopover) {
   $scope.term = 'werk';
-  $scope.characters = [];
+  $scope.characters = characters;
+  $scope.searchCharacters = [];
   $scope.searchTyped = function($event) {
     if($event.which === 13) {
       this.search();
@@ -14,8 +15,8 @@ angular.module('starter.controllers', [])
     $ionicLoading.show({
       template: 'Searching...'
     });
-    search(this.term).then(function(characters) {
-      $scope.characters = characters;
+    CharacterService.search(this.term).then(function(characters) {
+      $scope.searchCharacters = characters;
       $ionicLoading.hide();
     });
   }
@@ -28,9 +29,45 @@ angular.module('starter.controllers', [])
     }
   }
 
-  var search = function(term) {
-    return CharacterService.search(term);
+  $scope.remove = function(character) {
+    CharacterService.remove(character);
   }
+
+  $ionicPopover.fromTemplateUrl('my-popover.html', {
+    scope: $scope
+  }).then(function(popover) {
+    $scope.popover = popover;
+  });
+
+
+  $scope.openPopover = function($event) {
+    $scope.popover.show($event);
+  };
+  $scope.closePopover = function() {
+    $scope.popover.hide();
+  };
+  $scope.$on('$destroy', function() {
+    $scope.popover.remove();
+  });
+
+  var search = function(term) {
+    return ;
+  }
+
+  $scope.$on('deleted', function(evt, char) {
+    var idx =  -1;
+    for(var i=0; i< $scope.characters.length; i++) {
+      if($scope.characters[i].id === char.id) {
+        idx = i;
+      }
+    }
+    $scope.characters.splice(idx, 1);
+  });
+
+  $scope.$on('added', function(evt, char) {
+    $scope.characters.push(char);
+  });
+
 })
 .controller('CharactersCtrl', function($scope, characters) {
   var characters = characters;

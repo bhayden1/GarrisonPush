@@ -21,11 +21,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
   });
 })
 .directive('noScroll', function($document) {
-
   return {
     restrict: 'A',
     link: function($scope, $element, $attr) {
-
       $document.on('touchmove', function(e) {
         e.preventDefault();
       });
@@ -45,7 +43,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     views: {
       'tab-search': {
         templateUrl: 'templates/tab-search.html',
-        controller: 'SearchCtrl'
+        controller: 'SearchCtrl',
+        resolve: {
+          characters: function(CharacterService) {            
+            return CharacterService.getLocal();
+          }
+        }
       }
     }
   })

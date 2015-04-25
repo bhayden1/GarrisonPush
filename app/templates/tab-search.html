@@ -1,5 +1,18 @@
-<ion-view view-title="">
-  <ion-nav-buttons side="left">
+<ion-view view-title="My Characters">
+  <ion-content class="padding">
+    <button class="button button-positive button-block button-outline" ng-click="openPopover($event)">Add Characters</button>
+    <ion-list>
+      <ion-item class="item-remove-animate item-button-right" ng-repeat="character in characters" type="item-text-wrap">
+        <h2>{{character.Character}}</h2>
+        <p>{{character.Realm}}</p>
+        <button class="button button-icon icon ion-ios-close-empty" ng-click="remove(character)"></button>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+
+  <script id="my-popover.html" type="text/ng-template">
+  <ion-popover-view>
+    <ion-header-bar>
     <div class="item-input-inset">
       <label class="item-input-wrapper">
         <i class="icon ion-ios7-search placeholder-icon"></i>
@@ -9,11 +22,10 @@
         Go
       </button>
     </div>
-  </ion-nav-buttons>
-  <ion-content class="padding">
-
+    </ion-header-bar>
+    <ion-content>
     <ion-list>
-      <ion-item class="item-remove-animate item-checkbox" ng-repeat="character in characters" type="item-text-wrap">
+      <ion-item class="item-remove-animate item-checkbox" ng-repeat="character in searchCharacters" type="item-text-wrap">
         <label class="checkbox">
           <input type="checkbox" ng-click="add(character, $event)" ng-checked="character.selected">
         </label>
@@ -21,5 +33,7 @@
         <p>{{character.Realm}}</p>
       </ion-item>
     </ion-list>
-  </ion-content>
+    </ion-content>
+  </ion-popover-view>
+</script>
 </ion-view>
